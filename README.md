@@ -1,6 +1,10 @@
 # PixelCrop-Zoomable
 
-An application designed to do one thing: zoom into a pixel
+An application designed to do one thing:
+
+Zoom into a pixel
+
+
 
 # Features
 

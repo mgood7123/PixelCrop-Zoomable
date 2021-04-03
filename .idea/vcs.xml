@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/cpp/CircularBuffer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/cpp/CircularBuffer/SPSCQueue" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/cpp/CircularBuffer/corrade" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/cpp/CircularBuffer/googletest" vcs="Git" />
   </component>
 </project>

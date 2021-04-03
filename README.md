@@ -8,9 +8,11 @@ An application designed to do one thing: zoom into a pixel
 
 the `Zoom Layer` helps with getting your zoom just right where more accuracy is needed
 
+a `Zoom Layer Tab` consists of a `Zoom View`
+
 just zoom in, then tap `Add Layer`
 
-a new zoom view will be created with the source set to the zoom preview of the previous layer
+a new `Zoom Layer Tab` will be created with the source set to the zoom preview of the previous layer
 
 the `Zoom Layer` also acts as a `History View` when used correctly
 

@@ -8,7 +8,7 @@
         android:id="@+id/zoomCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zoom"
+        android:text="@string/zoom"
         android:buttonTint="#ff3d95c9"
         android:textColor="#ff3d95c9"
         android:layout_gravity="center"
@@ -26,7 +26,7 @@
         android:id="@+id/imageZoomContainer"
         android:layout_weight=".75"
         >
-        <smallville7123.example.pixelcrop.BoundedImageView
+        <smallville7123.zoomable.BoundedImageView
             android:id="@+id/zoomImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Export Zoomed Image"
+            android:text="@string/export_zoomed_image"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -52,7 +52,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         >
-        <smallville7123.example.pixelcrop.BoundedImageView
+        <smallville7123.zoomable.BoundedImageView
             android:id="@+id/imageMain"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -69,7 +69,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Export Image"
+            android:text="@string/export_image"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">Zoomable</string>
+    <string name="choose_a_photo">Choose a photo</string>
+    <string name="export_zoomed_image">Export Zoomed Image</string>
+    <string name="export_image">Export Image</string>
+    <string name="zoom">Zoom</string>
 </resources>

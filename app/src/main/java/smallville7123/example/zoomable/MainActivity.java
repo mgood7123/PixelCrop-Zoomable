@@ -1,4 +1,4 @@
-package smallville7123.zoomable.photocrop;
+package smallville7123.example.zoomable;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,8 +8,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import smallville7123.zoomable.R;
-
 public class MainActivity extends AppCompatActivity {
 
     Editor editor;
@@ -17,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_photocrop);
+        setContentView(R.layout.activity_main_zoomable);
         editor = new Editor(this);
         editor.setImageView(findViewById(R.id.image), this);
     }

@@ -26,7 +26,7 @@
         android:id="@+id/imageZoomContainer"
         android:layout_weight=".75"
         >
-        <smallville7123.zoomable.BoundedImageView
+        <smallville7123.example.zoomable.BoundedImageView
             android:id="@+id/zoomImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -52,7 +52,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         >
-        <smallville7123.zoomable.BoundedImageView
+        <smallville7123.example.zoomable.BoundedImageView
             android:id="@+id/imageMain"
             android:layout_width="0dp"
             android:layout_height="0dp"

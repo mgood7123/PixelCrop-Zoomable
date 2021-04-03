@@ -1,4 +1,4 @@
-package smallville7123.zoomable.photocrop;
+package smallville7123.example.photocrop;
 
 import android.Manifest;
 import android.app.Activity;

@@ -6,12 +6,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <smallville7123.zoomable.TabbedZoomImageView
+    <smallville7123.example.zoomable.TabbedZoomImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-    </smallville7123.zoomable.TabbedZoomImageView>
+    </smallville7123.example.zoomable.TabbedZoomImageView>
 
     <Button
         android:layout_width="match_parent"

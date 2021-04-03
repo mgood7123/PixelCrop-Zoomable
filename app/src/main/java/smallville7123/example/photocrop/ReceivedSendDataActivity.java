@@ -1,4 +1,4 @@
-package smallville7123.zoomable.photocrop;
+package smallville7123.example.photocrop;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,9 +7,11 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ReceivedViewDataActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
-    private static final String TAG = "ReceivedViewDataActivity";
+public class ReceivedSendDataActivity extends AppCompatActivity {
+
+    private static final String TAG = "ReceivedSendDataActivity";
 
     Editor editor;
 
@@ -26,13 +28,19 @@ public class ReceivedViewDataActivity extends AppCompatActivity {
         Log.d(TAG, "type = [" + (type) + "]");
 
         if (type != null) {
-            boolean isView = Intent.ACTION_VIEW.equals(action);
-            if (isView) {
+            boolean isSend = Intent.ACTION_SEND.equals(action);
+            boolean isSendMultiple = Intent.ACTION_SEND_MULTIPLE.equals(action);
+            if (isSend || isSendMultiple) {
                 if (type.startsWith("image/")) {
                     editor = new Editor(this);
                     editor.setImageView(photoCropImageView, this);
-                    // Handle single image being viewed
-                    handleSendView(intent);
+                    if (isSend) {
+                        // Handle single image being sent
+                        handleSendImage(intent);
+                    } else {
+                        // Handle multiple images being sent
+                        handleSendMultipleImages(intent);
+                    }
                     return;
                 }
             }
@@ -40,10 +48,17 @@ public class ReceivedViewDataActivity extends AppCompatActivity {
         finishAndRemoveTask();
     }
 
-    void handleSendView(Intent intent) {
-        Uri imageUri = intent.getData();
+    void handleSendImage(Intent intent) {
+        Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUri != null) {
             editor.loadUriWithPermissionCheck(this, intent, imageUri, 1);
+        }
+    }
+
+    void handleSendMultipleImages(Intent intent) {
+        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        if (imageUris != null) {
+//            editor.loadUris(imageUris);
         }
     }
 

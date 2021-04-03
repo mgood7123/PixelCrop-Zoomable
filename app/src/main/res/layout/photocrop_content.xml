@@ -9,7 +9,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         >
-        <smallville7123.zoomable.photocrop.BoundedImageView
+        <smallville7123.example.photocrop.BoundedImageView
             android:id="@+id/imageMain"
             android:layout_width="0dp"
             android:layout_height="0dp"

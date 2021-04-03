@@ -1,4 +1,4 @@
-package smallville7123.zoomable.photocrop;
+package smallville7123.example.photocrop;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
-import smallville7123.zoomable.R;
+import smallville7123.example.zoomable.R;
 
 public class PhotoCropImageView extends FrameLayout {
     private static final String TAG = "PhotoCropImageView";

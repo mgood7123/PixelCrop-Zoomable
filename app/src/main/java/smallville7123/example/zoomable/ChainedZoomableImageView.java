@@ -1,4 +1,4 @@
-package smallville7123.zoomable;
+package smallville7123.example.zoomable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,7 +8,7 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 
-import smallville7123.zoomable.BoundedImageView.BitmapListener;
+import smallville7123.example.zoomable.BoundedImageView.BitmapListener;
 
 public class ChainedZoomableImageView {
     private static final String TAG = "ChainedZoomableImage";

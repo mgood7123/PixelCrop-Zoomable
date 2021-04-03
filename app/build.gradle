@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "smallville7123.zoomable"
+        applicationId "smallville7123.example.zoomable"
         minSdkVersion 28
         targetSdkVersion 30
         versionCode 2

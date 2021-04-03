@@ -1,4 +1,4 @@
-package smallville7123.zoomable;
+package smallville7123.example.zoomable;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

@@ -1,10 +1,7 @@
-package smallville7123.zoomable.photocrop;
+package smallville7123.example.photocrop;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
-
-import java.util.Arrays;
 
 import smallville7123.circularbuffer.UndoRedoCircularBuffer;
 

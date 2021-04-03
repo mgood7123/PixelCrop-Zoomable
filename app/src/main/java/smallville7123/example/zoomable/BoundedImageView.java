@@ -1,4 +1,4 @@
-package smallville7123.zoomable.photocrop;
+package smallville7123.example.zoomable;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -6,20 +6,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.BlendMode;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -44,8 +39,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import smallville7123.zoomable.R;
-
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class BoundedImageView extends FrameLayout {
@@ -55,29 +48,10 @@ public class BoundedImageView extends FrameLayout {
     public boolean DEBUG = false;
 
     boolean magnifying;
-    final boolean showColor = true;
     ImageView imageView;
     Drawable highlight;
     Drawable select;
     private final boolean allowTouchesOutsideOfImage = true;
-
-    int color;
-    String colorInt;
-    String colorHex;
-
-    private final static Paint paintBlack = new Paint() {
-        {
-            setColor(Color.BLACK);
-        }
-    };
-
-    ColorMatrix invertColorMatrix = new ColorMatrix(new float[]{
-            -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f, 0.0f
-    });
-    ColorMatrixColorFilter invertColorMatrixColorFilter = new ColorMatrixColorFilter(invertColorMatrix);
 
     public BoundedImageView(Context context) {
         super(context);
@@ -116,80 +90,16 @@ public class BoundedImageView extends FrameLayout {
         select = theme.getDrawable(android.R.drawable.ic_menu_close_clear_cancel);
 
         imageView = new ImageView(getContext()) {
-            private final Canvas canvas = new Canvas();
-            private Bitmap result;
-            private Bitmap masked;
-
-            int width;
-            int height;
-            int size;
-            int[] maskedPixels;
-            int[] inputPixels;
-
-            final protected void createBitmap(int width, int height) {
-                if (result != null) result.recycle();
-                if (masked != null) masked.recycle();
-                this.width = width;
-                this.height = height;
-                size = width * height;
-                maskedPixels = new int[size];
-                inputPixels = new int[size];
-                result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                masked = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            }
-
             @Override
-            protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-                super.onSizeChanged(w, h, oldw, oldh);
-                createBitmap(w, h);
-            }
-
-            public void mask(Bitmap mask, int targetColor, Bitmap input, Bitmap output) {
-                mask.getPixels(maskedPixels, 0, width, 0, 0, width, height);
-                input.getPixels(inputPixels, 0, width, 0, 0, width, height);
-
-                for (int i = 0; i < size; i++) {
-                    if (maskedPixels[i] == targetColor) inputPixels[i] = inputPixels[i] ^ 0x00ffffff;
-                }
-
-                output.setPixels(inputPixels, 0, width, 0, 0, width, height);
-            }
-
-            final Paint bitmapPaint = new Paint();
-
-            ConnectionDrawer connectionDrawer = new ConnectionDrawer();
-
-            @Override
-            public void draw(Canvas realCanvas) {
+            public void draw(Canvas canvas) {
+                super.draw(canvas);
                 if (magnifying) {
-                    super.draw(realCanvas);
                     int x = selectorX;
                     int y = selectorY;
                     int w = selectorWidth + x;
                     int h = selectorHeight + y;
-                    realCanvas.clipOutRect(x, y, w, h);
-                    realCanvas.drawRect(imageBoundsRelativeToView, shadow);
-                } else if (showColor) {
-                    canvas.setBitmap(masked);
-                    canvas.drawColor(0, PorterDuff.Mode.SRC_IN);
-
-                    ColorFilter saved = getColorFilter();
-                    setColorFilter(invertColorMatrixColorFilter);
-                    super.draw(canvas);
-                    setColorFilter(saved);
-
-                    canvas.setBitmap(result);
-                    canvas.drawColor(0, PorterDuff.Mode.SRC_IN);
-                    super.draw(canvas);
-
-                    bitmapPaint.setShader(new BitmapShader(masked, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-
-                    connectionDrawer.setNext(selectorX, selectorY);
-                    connectionDrawer.drawCircle(canvas, 20, bitmapPaint);
-                    connectionDrawer.drawLine(canvas, 100, -150, bitmapPaint);
-                    connectionDrawer.drawRect(canvas, 400, -100, bitmapPaint);
-
-                    realCanvas.drawBitmap(result, 0, 0, null);
+                    canvas.clipOutRect(x, y, w, h);
+                    canvas.drawRect(imageBoundsRelativeToView, shadow);
                 }
                 invalidate();
             }
@@ -237,42 +147,26 @@ public class BoundedImageView extends FrameLayout {
         if (DEBUG) {
             Log.d(TAG, "imageBoundsRelativeToImage = [" + (imageBoundsRelativeToImage) + "]");
             Log.d(TAG, "imageBoundsRelativeToView = [" + (imageBoundsRelativeToView) + "]");
-            Log.d(TAG, "selectorX = [" + (selectorX) + "]");
-            Log.d(TAG, "selectorY = [" + (selectorX) + "]");
-            Log.d(TAG, "selectorWidth = [" + (selectorWidth) + "]");
-            Log.d(TAG, "selectorHeight = [" + (selectorHeight) + "]");
-        }
-        if (imageBoundsRelativeToView == null) return;
-        if (selectorWidth > imageBoundsRelativeToView.right) {
-            if (DEBUG) {
-                Log.d(TAG, "updateSelectorLocation: returning due to selectorWidth > imageBoundsRelativeToView.right");
-            }
-            return;
-        }
-        if (selectorHeight > imageBoundsRelativeToView.bottom) {
-            if (DEBUG) {
-                Log.d(TAG, "updateSelectorLocation: returning due to selectorHeight > imageBoundsRelativeToView.bottom");
-            }
-            return;
-        }
-        if (selectorX < imageBoundsRelativeToView.left) {
-            selectorX = imageBoundsRelativeToView.left;
-        }
-        if (selectorY < imageBoundsRelativeToView.top) {
-            selectorY = imageBoundsRelativeToView.top;
         }
         if (magnifying) {
+            if (imageBoundsRelativeToView == null) return;
+            if (selectorWidth > imageBoundsRelativeToView.right) {
+                return;
+            }
+            if (selectorHeight > imageBoundsRelativeToView.bottom) {
+                return;
+            }
+            if (selectorX < imageBoundsRelativeToView.left) {
+                selectorX = imageBoundsRelativeToView.left;
+            }
+            if (selectorY < imageBoundsRelativeToView.top) {
+                selectorY = imageBoundsRelativeToView.top;
+            }
             if (selectorX + selectorWidth > imageBoundsRelativeToView.right) {
                 selectorX = imageBoundsRelativeToView.right - selectorWidth;
             }
             if (selectorY + selectorHeight > imageBoundsRelativeToView.bottom) {
                 selectorY = imageBoundsRelativeToView.bottom - selectorHeight;
-            }
-            if (DEBUG) {
-                Log.d(TAG, "selectorX = [" + (selectorX) + "]");
-                Log.d(TAG, "selectorY = [" + (selectorX) + "]");
-                Log.d(TAG, "selectorWidth = [" + (selectorWidth) + "]");
-                Log.d(TAG, "selectorHeight = [" + (selectorHeight) + "]");
             }
             if (bitmapListenerArrayList.size() != 0) {
                 Bitmap bitmap = getBitmapFromDrawable(imageView.getDrawable());
@@ -333,49 +227,8 @@ public class BoundedImageView extends FrameLayout {
                 }
             }
         } else {
-            if (selectorX > imageBoundsRelativeToView.right) {
-                selectorX = imageBoundsRelativeToView.right;
-            }
-            if (selectorY > imageBoundsRelativeToView.bottom) {
-                selectorY = imageBoundsRelativeToView.bottom;
-            }
-            if (DEBUG) {
-                Log.d(TAG, "selectorX = [" + (selectorX) + "]");
-                Log.d(TAG, "selectorY = [" + (selectorX) + "]");
-            }
             Bitmap bitmap = getBitmapFromDrawable(imageView.getDrawable());
-
             if (bitmap != null) {
-                int w = bitmap.getWidth();
-                float imageWidth = imageBoundsRelativeToView.right - imageBoundsRelativeToView.left;
-                float cropX = selectorX - imageBoundsRelativeToView.left;
-
-                int h = bitmap.getHeight();
-                float imageHeight = imageBoundsRelativeToView.bottom - imageBoundsRelativeToView.top;
-                float cropY = selectorY - imageBoundsRelativeToView.top;
-
-                int x_ = (int) (cropX * (w / imageWidth));
-                int y_ = (int) (cropY * (h / imageHeight));
-
-                if (DEBUG) {
-
-                    Log.d(TAG, "w = [" + (w) + "]");
-                    Log.d(TAG, "imageWidth = [" + (imageWidth) + "]");
-                    Log.d(TAG, "cropX = [" + (cropX) + "]");
-                    Log.d(TAG, "cropX * (w / imageWidth) = [" + (cropX * (w / imageWidth)) + "]");
-
-                    Log.d(TAG, "h = [" + (h) + "]");
-                    Log.d(TAG, "imageHeight = [" + (imageHeight) + "]");
-                    Log.d(TAG, "cropY = [" + (cropY) + "]");
-                    Log.d(TAG, "cropY * (h / imageHeight) = [" + (cropY * (h / imageHeight)) + "]");
-
-                    Log.d(TAG, "x_ = [" + (x_) + "]");
-                    Log.d(TAG, "y_ = [" + (y_) + "]");
-
-                }
-                color = ColorTools.getColor(bitmap, x_, y_);
-                colorInt = ColorTools.toIntString(color);
-                colorHex = ColorTools.toHexString(color);
                 bitmapListenerArrayList.forEach(bitmapListener -> bitmapListener.onReady(bitmap));
             }
         }
@@ -432,7 +285,7 @@ public class BoundedImageView extends FrameLayout {
         return file;
     }
 
-    public static String getNextFileName(String path, String extension) {
+    public static long getNextFileNameNumber(String path, String extension) {
         long n = 0;
         String newPath = path;
         File file = new File(newPath + extension);
@@ -441,14 +294,15 @@ public class BoundedImageView extends FrameLayout {
             newPath = path + " (" + n + ")";
             file = new File(newPath + extension);
         }
-        return newPath;
+        return n;
     }
 
     public void saveImage_(String prefix, String sub_folder) {
         File ext = Environment.getExternalStorageDirectory();
         String directory = Environment.DIRECTORY_PICTURES + "/" + sub_folder;
-        String name = prefix;
-        String path = getNextFileName(ext + "/" + directory + "/" + name, ".png");
+        long number = getNextFileNameNumber(ext + "/" + directory + "/" + prefix, ".png");
+        String name = (number == 0 ? prefix : (prefix + " (" + number + ")"));
+        String path = ext + "/" + directory + "/" + name;
 
         OutputStream fos;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
